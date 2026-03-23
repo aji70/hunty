@@ -180,7 +180,7 @@ export function PlayGame({
         <div className="flex items-center gap-4 mb-8">
           <Button
             variant="ghost"
-            onClick={onExit}
+            onClick={handleExit}
             className="flex items-center gap-2 text-slate-700 hover:text-slate-900"
           >
             <ArrowLeft className="w-6 h-6 fill-[#0C0C4F]" />
