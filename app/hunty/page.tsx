@@ -213,7 +213,7 @@ export default function CreateGame() {
               setShowGameCompleteModal(false)
               window.location.href = "/?tab=leaderboard"
             }}
-            reward={5.43}
+            reward={rewardPool}
           />
         }
       />
