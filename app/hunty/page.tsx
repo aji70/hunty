@@ -28,6 +28,12 @@ import ToggleButton from "@/components/ToggleButton"
 import Replay from "@/components/icons/Replay"
 import Medal from "@/components/icons/Medal"
 import { Reward } from "@/components/RewardsPanel"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface Hunt {
   id: number;
@@ -279,7 +285,8 @@ export default function CreateGame() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-blue-100 bg-purple-100 to-[#f9f9ff] pb-28">
+    <TooltipProvider>
+      <div className="min-h-screen bg-gradient-to-tr from-blue-100 bg-purple-100 to-[#f9f9ff] pb-28">
       <Header balance="24.2453" />
 
       <div className="max-w-[1500px] mx-40 pb-12 bg-white rounded-4xl  relative ">
@@ -484,16 +491,36 @@ export default function CreateGame() {
                       Share Link/Generate QR Code
                     </label>
                     <div className="flex gap-2">
-                      <Button
-                        onClick={handleShare}
-                        className="bg-gradient-to-b from-[#3737A4] to-[#0C0C4F]  hover:bg-slate-700 text-white px-4 py-2 rounded-full flex items-center gap-2"
-                      >
-                        <Share />
-                        Share Now
-                      </Button>
-                      <Button size="icon" variant="outline" className="rounded-lg border-1 border-transparent bg-white bg-clip-padding shadow-sm hover:bg-slate-50 [background:linear-gradient(white,white)_padding-box,linear-gradient(to_bottom,#3737A4,#0C0C4F)_border-box]" onClick={() => setQrOpen(true)} title="Show QR Code">
-                        <QrCode className="w-4 h-4 text-[#0C0C4F]" />
-                      </Button>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            onClick={handleShare}
+                            className="bg-gradient-to-b from-[#3737A4] to-[#0C0C4F]  hover:bg-slate-700 text-white px-4 py-2 rounded-full flex items-center gap-2"
+                          >
+                            <Share />
+                            Share Now
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Copy Share Link</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            size="icon"
+                            variant="outline"
+                            className="rounded-lg border-1 border-transparent bg-white bg-clip-padding shadow-sm hover:bg-slate-50 [background:linear-gradient(white,white)_padding-box,linear-gradient(to_bottom,#3737A4,#0C0C4F)_border-box]"
+                            onClick={() => setQrOpen(true)}
+                            title="Show QR Code"
+                          >
+                            <QrCode className="w-4 h-4 text-[#0C0C4F]" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Generate QR Code</p>
+                        </TooltipContent>
+                      </Tooltip>
                     </div>
                   </div>
       <QrCodeModal open={qrOpen} onClose={() => setQrOpen(false)} url={typeof window !== "undefined" ? window.location.href : ""} />
@@ -503,17 +530,31 @@ export default function CreateGame() {
                       Save As Image
                     </label>
                     <div className="flex gap-2">
-                      <Button className="bg-gradient-to-b from-[#3737A4] to-[#0C0C4F] hover:bg-slate-700 text-white px-4 py-2 rounded-full flex items-center gap-2">
-                        <Download className="w-4 h-4 " />
-                        Download
-                      </Button>
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        className="rounded-lg border-1 border-transparent bg-white bg-clip-padding shadow-sm hover:bg-slate-50 [background:linear-gradient(white,white)_padding-box,linear-gradient(to_bottom,#3737A4,#0C0C4F)_border-box]"
-                      >
-                        <Printer className="w-4 h-4 text-[#0C0C4F]" />
-                      </Button>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button className="bg-gradient-to-b from-[#3737A4] to-[#0C0C4F] hover:bg-slate-700 text-white px-4 py-2 rounded-full flex items-center gap-2">
+                            <Download className="w-4 h-4 " />
+                            Download
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Download Scavenge Image</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            size="icon"
+                            variant="outline"
+                            className="rounded-lg border-1 border-transparent bg-white bg-clip-padding shadow-sm hover:bg-slate-50 [background:linear-gradient(white,white)_padding-box,linear-gradient(to_bottom,#3737A4,#0C0C4F)_border-box]"
+                          >
+                            <Printer className="w-4 h-4 text-[#0C0C4F]" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Print Page</p>
+                        </TooltipContent>
+                      </Tooltip>
                     </div>
                   </div>
 
@@ -549,6 +590,7 @@ export default function CreateGame() {
         onPublish={handlePublish}
         gameName={gameName}
       />
-    </div>
+      </div>
+    </TooltipProvider>
   );
 }
