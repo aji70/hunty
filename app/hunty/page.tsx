@@ -51,25 +51,28 @@ interface LeaderboardEntry {
   icon: ReactNode;
 }
 
-export default function CreateGame() {
-  const [activeTab, setActiveTab] = useState<"create" | "rewards" | "publish">(
-    "create",
-  );
-  const [hunts, setHunts] = useState<Hunt[]>([
-    { id: 1, title: "", description: "", link: "", code: "" },
-  ]);
-  const [rewards, setRewards] = useState<Reward[]>([]);
-  const [gameName, setGameName] = useState("Hunty");
+export default function CreateGame() {  
+  const [activeTab, setActiveTab] = useState<"create" | "rewards" | "publish" | "leaderboard">("create")
+  const [hunts, setHunts] = useLocalStorage<Hunt[]>("draft-hunts", [{ id: 1, title: "", description: "", link: "", code: "" }])
+  const [rewards, setRewards] = useLocalStorage<Reward[]>("draft-rewards", []);
+  const [gameName, setGameName] = useLocalStorage("draft-gameName", "Hunty")
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [timer, setTimer] = useState({ minutes: 0, seconds: 15 });
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [timer, setTimer] = useLocalStorage("draft-timer", { minutes: 0, seconds: 15 })
+  const [startDate, setStartDate] = useLocalStorage("draft-startDate", "")
+  const [endDate, setEndDate] = useLocalStorage("draft-endDate", "")
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [endTime, setEndTime] = useState("00:00 AM");
-  const [showPublishModal, setShowPublishModal] = useState(false);
-  const [showGameCompleteModal, setShowGameCompleteModal] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const router = useRouter();
+  const [endTime, setEndTime] = useLocalStorage("draft-endTime", "00:00 AM")
+  const [showPublishModal, setShowPublishModal] = useState(false)
+  const [showGameCompleteModal, setShowGameCompleteModal] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [qrOpen, setQrOpen] = useState(false)
+  const router = useRouter()
+
+  const handleShare = () => {
+    if (typeof window !== "undefined") {
+      navigator.clipboard.writeText(window.location.href)
+    }
+  }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isPublishing, setIsPublishing] = useState(false);
   const [huntId, setHuntId] = useState<number>(1); // Default to 1 for preview
