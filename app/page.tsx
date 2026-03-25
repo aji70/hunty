@@ -11,11 +11,12 @@ import { X, ArrowRight, Trophy } from "lucide-react"
 import { Card, CardDescription, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Header } from "@/components/Header"
-import { getAllHunts } from "@/lib/huntStore"
+import { getAllHunts, getFeaturedHunts } from "@/lib/huntStore"
 import { LeaderboardTable } from "@/components/LeaderBoardTable"
 import { hankenGrotesk } from "@/lib/font"
 import OnboardingTour from "@/components/OnboardingTour"
 import { GlobalActivityFeed } from "@/components/GlobalActivityFeed"
+import { FeaturedHunts } from "@/components/FeaturedHunts"
 
 interface WalletOption {
   id: string
@@ -223,6 +224,9 @@ export default function GameArcade() {
         <div className="mt-10 mb-10">
           <GlobalActivityFeed />
         </div>
+
+        {/* Featured Hunts Hero Section */}
+        <FeaturedHunts />
 
         {/* Active Hunts Grid */}
         <div className="mt-10">

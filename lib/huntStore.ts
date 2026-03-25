@@ -190,3 +190,37 @@ export function getHuntById(id: number) {
 export const getHunt = (id: string) => {
   return readHunts().find((c) => c.id === Number(id))
 }
+
+/**
+ * Return up to `limit` featured hunts, ranked by a trending score.
+ * Score factors: clue count, reward type variety, time remaining, recency.
+ */
+export function getFeaturedHunts(limit = 3): StoredHunt[] {
+  const now = Math.floor(Date.now() / 1000)
+  const active = readHunts().filter((h) => h.status === "Active")
+
+  const scored = active.map((hunt) => {
+    let score = 0
+    // More clues = higher quality hunt
+    score += hunt.cluesCount * 10
+    // Dual-reward hunts are more attractive
+    if (hunt.rewardType === "Both") score += 20
+    else if (hunt.rewardType === "NFT") score += 10
+    // Hunts ending soon get a boost (urgency)
+    if (hunt.endTime) {
+      const hoursLeft = (hunt.endTime - now) / 3600
+      if (hoursLeft > 0 && hoursLeft < 48) score += 15
+    }
+    // Recently started hunts get a freshness boost
+    if (hunt.startTime) {
+      const daysSinceStart = (now - hunt.startTime) / 86400
+      if (daysSinceStart < 3) score += 10
+    }
+    return { hunt, score }
+  })
+
+  return scored
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((s) => s.hunt)
+}
